@@ -3,6 +3,20 @@
 ## Description  
 The Native Smart Lock is a functional prototype designed and developed for a school project. It is a secure, door locking system that can be accessed using multiple options for access control, including fingerprint, keypad, mobile application, and tactile buttons. The system also features tamper  detection using an ultrasonic sensor, real-time responses to security breaches via SMS alerts, and a user interface (keypad + OLED) to aid man-machine communication.  
 
+## Repository Layout
+  
+```
+.
+├── App files
+├── BOM
+├── Flowcharts
+├── Images
+├── LICENSE
+├── README.md
+├── Schematic
+└── Source Codes
+```
+
 ## Features  
 1. Access control via:  
 - Fingerprint sensor  
@@ -77,6 +91,10 @@ The app was developed using ``MIT App Inventor``. The ``aia`` file can be found 
 10  |   Solenoid Lock   |   PA3   |     
 11  |   Buzzer      |   PA8   |     
 12  |   DS3231  RTC   |   I2C1 (PB6, PB7)  |   
+
+## Video Demos  
+
+Comprehensive demonstrations of all features of this project can be found here: [Demos](https://drive.google.com/drive/folders/1McURfwLWHSYvTtmaqLfDcmR_t5q89s1B?usp=sharing)  
 
 ## Important SIM800L points  
 1. The module should be powered with sufficient voltage (4.1 to 4.4v).  
