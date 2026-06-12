@@ -1,25 +1,27 @@
+// Author: Olaoluwa Raji
+
 #include "app.h"
 
 void Display(char* msg)
 {
-	const uint8_t xPos = 2;
-	const uint8_t yPos = 10;
-	uint8_t y = yPos;
-	
-	OLED_ClearScreen();
-	OLED_SetCursor(xPos,y);
-	uint8_t i = 0;
-	while(msg[i] != '\0')
-	{
-		if(msg[i] == '\n')
-		{
-			y += 10; //+10 pixels for newline 
-			OLED_SetCursor(xPos,y);
-		}
-		OLED_WriteChar(msg[i],WHITE);
-		i++;
-	}
-	OLED_UpdateScreen();
+  const uint8_t xPos = 2;
+  const uint8_t yPos = 10;
+  uint8_t y = yPos;
+  
+  OLED_ClearScreen();
+  OLED_SetCursor(xPos,y);
+  uint8_t i = 0;
+  while(msg[i] != '\0')
+  {
+    if(msg[i] == '\n')
+    {
+      y += 10; //+10 pixels for newline 
+      OLED_SetCursor(xPos,y);
+    }
+    OLED_WriteChar(msg[i],WHITE);
+    i++;
+  }
+  OLED_UpdateScreen();
 }
 
 void GetKeypadData(char* keyBuffer)
@@ -48,16 +50,16 @@ void GetKeypadData(char* keyBuffer)
 
 pw_s RetryPassword(char* keyBuffer,char* password)
 {
-	char errorMsg[18] = "Incorrect\nRetry:";
-	char nTries;
+  char errorMsg[18] = "Incorrect\nRetry:";
+  char nTries;
   pw_s passwordState = PASSWORD_INCORRECT;
   uint8_t retry = 1;
-	
+  
   while(retry <= 2)
   {
-		nTries = retry + '0'; //adding '0' converts int to char
-		errorMsg[16] = nTries; //number of attempts
-		Display(errorMsg);
+    nTries = retry + '0'; //adding '0' converts int to char
+    errorMsg[16] = nTries; //number of attempts
+    Display(errorMsg);
     GetKeypadData(keyBuffer);
     retry++;
     if(strcmp(keyBuffer,password) == 0)
@@ -79,7 +81,7 @@ void InputNewPassword(void)
   GetKeypadData(pswd);
   if(strcmp(pswd,newPassword) == 0)
   {
-		EEPROM_StoreData((uint8_t*)pswd,BUFFER_SIZE,PSWD_EEPROMPAGE);
+    EEPROM_StoreData((uint8_t*)pswd,BUFFER_SIZE,PSWD_EEPROMPAGE);
     Display("New password\ncreated");
   }
   else
@@ -89,7 +91,7 @@ void InputNewPassword(void)
     {
       case PASSWORD_CORRECT:
         EEPROM_StoreData((uint8_t*)pswd,BUFFER_SIZE,PSWD_EEPROMPAGE);
-				Display("New password\ncreated");
+        Display("New password\ncreated");
         break;
       case PASSWORD_INCORRECT:
         Display("Could not create");
@@ -100,26 +102,26 @@ void InputNewPassword(void)
 
 void InputPhoneNumber(void)
 {
-	char countryCode[] = "+234";
- 	char phoneNumber[15] = {0};
-	char displayMsg[30] = "Phone number:\n";
-	GetKeypadData(phoneNumber+3);
-	//Insert country code
-	for(uint8_t i = 0; i < 4; i++)
-	{
-		phoneNumber[i] = countryCode[i];
-	}
-	strcat(displayMsg,phoneNumber);
-	EEPROM_StoreData((uint8_t*)phoneNumber,BUFFER_SIZE,PHONE_EEPROMPAGE);
-	Display(displayMsg);
+  char countryCode[] = "+234";
+   char phoneNumber[15] = {0};
+  char displayMsg[30] = "Phone number:\n";
+  GetKeypadData(phoneNumber+3);
+  //Insert country code
+  for(uint8_t i = 0; i < 4; i++)
+  {
+    phoneNumber[i] = countryCode[i];
+  }
+  strcat(displayMsg,phoneNumber);
+  EEPROM_StoreData((uint8_t*)phoneNumber,BUFFER_SIZE,PHONE_EEPROMPAGE);
+  Display(displayMsg);
 }
 
 void IntruderAlert(char* msg)
 {
-	char phoneNumber[15] = {0};
-	OutputDev_Write(BUZZER,true);
-	EEPROM_GetData((uint8_t*)phoneNumber,BUFFER_SIZE,PHONE_EEPROMPAGE);
-	GSM_SendText(phoneNumber,msg);
+  char phoneNumber[15] = {0};
+  OutputDev_Write(BUZZER,true);
+  EEPROM_GetData((uint8_t*)phoneNumber,BUFFER_SIZE,PHONE_EEPROMPAGE);
+  GSM_SendText(phoneNumber,msg);
 }
 
 void CheckKey(char key)
@@ -127,7 +129,7 @@ void CheckKey(char key)
   if(key == '*')
   {
     Display("Correct");
-		OutputDev_Write(LOCK,true);
+    OutputDev_Write(LOCK,true);
   }
   else if(key == 'A')
   {
@@ -163,10 +165,10 @@ void CheckKey(char key)
         Display("Database cleared");
         break;
       }
-			else if(getKey == 'B')
-			{
-				break;
-			}
+      else if(getKey == 'B')
+      {
+        break;
+      }
     }
   }
 }
@@ -231,54 +233,54 @@ uint8_t FindFingerprint(void)
 
 bool HasTimedOut(uint8_t* tCount,uint8_t timeout)
 {
-	//*tCount = pointer to variable that will be incremented every second.
-	//if *tCount = timeout, then a timeout for a certain event has occured.
-	(*tCount)++;
-	if(*tCount >= timeout)
-	{
-		*tCount = 0;
-		return true;
-	}
-	return false;
+  //*tCount = pointer to variable that will be incremented every second.
+  //if *tCount = timeout, then a timeout for a certain event has occured.
+  (*tCount)++;
+  if(*tCount >= timeout)
+  {
+    *tCount = 0;
+    return true;
+  }
+  return false;
 }
 
 void SetIntertaskData(bool* pSharedData,bool state)
 {
-	*pSharedData = state; 	
+  *pSharedData = state; 	
 }
 
 void IntertaskTimeout(bool* pSharedData,
-											uint8_t* tCount,
-											uint8_t timeout)
+                      uint8_t* tCount,
+                      uint8_t timeout)
 {
-	if(*pSharedData)
-	{
-		if(HasTimedOut(tCount,timeout))
-		{
-			SetIntertaskData(pSharedData,false);
-		}
-	}
+  if(*pSharedData)
+  {
+    if(HasTimedOut(tCount,timeout))
+    {
+      SetIntertaskData(pSharedData,false);
+    }
+  }
 }
 
 void IntegerToString(uint32_t integer, char* pBuffer)
 {
-	if(integer == 0)
-	{//Edge case  
-		pBuffer[0] = '0';
-		return;
-	}
-	uint32_t copyOfInt = integer;
-	uint8_t noOfDigits = 0;
+  if(integer == 0)
+  {//Edge case  
+    pBuffer[0] = '0';
+    return;
+  }
+  uint32_t copyOfInt = integer;
+  uint8_t noOfDigits = 0;
 
-	while(copyOfInt > 0)
-	{
-		copyOfInt /= 10;
-		noOfDigits++;
-	}
-	while(integer > 0)
-	{
-		pBuffer[noOfDigits - 1] = '0' + (integer % 10);
-		integer /= 10;
-		noOfDigits--;
-	}
+  while(copyOfInt > 0)
+  {
+    copyOfInt /= 10;
+    noOfDigits++;
+  }
+  while(integer > 0)
+  {
+    pBuffer[noOfDigits - 1] = '0' + (integer % 10);
+    integer /= 10;
+    noOfDigits--;
+  }
 }

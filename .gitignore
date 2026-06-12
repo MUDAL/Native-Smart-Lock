@@ -38,3 +38,6 @@ DebugConfig/
 **/*.lck
 **/fp-info-cache
 **/*.kicad_prl
+
+# Other files/directories
+Deprecated/

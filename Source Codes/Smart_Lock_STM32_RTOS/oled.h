@@ -3,7 +3,7 @@
  * Some refactoring was done and SPI support was added by Aleksander Alekseev (afiskon) in 2018.
  * https://github.com/afiskon/stm32-OLED
  * 
- * I modified and optimized the library to suit my application
+ * I (Olaoluwa Raji) modified and optimized the library to suit my application.
  * OLED: SH1106
  */
 
@@ -17,8 +17,8 @@
 // Enumeration for screen colors
 typedef enum 
 {
-	BLACK = 0x00, // Black color, no pixel
-	WHITE = 0x01  // Pixel is set. Color depends on OLED
+    BLACK = 0x00, // Black color, no pixel
+    WHITE = 0x01  // Pixel is set. Color depends on OLED
 } OLED_COLOR;
 
 extern void OLED_Init(void);

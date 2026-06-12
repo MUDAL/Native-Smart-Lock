@@ -1,3 +1,12 @@
+/**
+ * This Library was originally written by Olivier Van den Eede (4ilo) in 2016.
+ * Some refactoring was done and SPI support was added by Aleksander Alekseev (afiskon) in 2018.
+ * https://github.com/afiskon/stm32-OLED
+ * 
+ * I (Olaoluwa Raji) modified and optimized the library to suit my application.
+ * OLED: SH1106
+ */
+
 #include "stm32f10x.h"                  // Device header
 #include "oled.h"
 #include "i2c.h"
@@ -6,8 +15,8 @@
 #include <string.h>
 
 #define OLED_I2C_ADDR   0x3C
-#define FONT_WIDTH				7
-#define FONT_HEIGHT				10
+#define FONT_WIDTH		7
+#define FONT_HEIGHT		10
 
 static uint16_t xPos; 
 static uint16_t yPos; 
@@ -115,152 +124,152 @@ const uint16_t Font_7x10 [] =
 // Send a byte to the command register
 static void OLED_WriteCommand(uint8_t byte) 
 {
-	I2C_WriteByte(I2C1,OLED_I2C_ADDR,0x00,byte);
+    I2C_WriteByte(I2C1,OLED_I2C_ADDR,0x00,byte);
 }
 
 // Send data
 static void OLED_WriteData(uint8_t* buffer, uint32_t buff_size) 
 {
-	I2C_WriteMultiByte(I2C1,OLED_I2C_ADDR,0x40,buffer,buff_size);
+    I2C_WriteMultiByte(I2C1,OLED_I2C_ADDR,0x40,buffer,buff_size);
 }
 
 // Fill the whole screen with the given color
 static void OLED_Fill(OLED_COLOR color) 
 {
-	for(uint32_t i = 0; i < sizeof(screenBuffer); i++) 
-	{
-		screenBuffer[i] = (color == BLACK) ? 0x00 : 0xFF;
-	}
+    for(uint32_t i = 0; i < sizeof(screenBuffer); i++) 
+    {
+        screenBuffer[i] = (color == BLACK) ? 0x00 : 0xFF;
+    }
 }
 
 // Initialize the oled screen
 void OLED_Init(void) 
 {
-	vTaskDelay(pdMS_TO_TICKS(100)); // Wait for the screen to boot
-	OLED_WriteCommand(0xAE);   // Display off
-	OLED_WriteCommand(0x20);   // Set Memory Addressing Mode
-	OLED_WriteCommand(0x10);   // 00,Horizontal Addressing Mode;01,Vertical Addressing Mode;10,Page Addressing Mode (RESET);11,Invalid
-	OLED_WriteCommand(0xB0);   // Set Page Start Address for Page Addressing Mode,0-7
-	OLED_WriteCommand(0xC8);   // Set COM Output Scan Direction
-	OLED_WriteCommand(0x00);   // Set low column address
-	OLED_WriteCommand(0x10);   // Set high column address
-	OLED_WriteCommand(0x40);   // Set start line address
-	OLED_WriteCommand(0x81);   // set contrast control register
-	OLED_WriteCommand(0xFF);
-	OLED_WriteCommand(0xA1);   // Set segment re-map 0 to 127
-	OLED_WriteCommand(0xA6);   // Set normal display
-	OLED_WriteCommand(0xA8);   // Set multiplex ratio(1 to 64)
-	OLED_WriteCommand(0x3F);
-	OLED_WriteCommand(0xA4);   // 0xa4,Output follows RAM content;0xa5,Output ignores RAM content
-	OLED_WriteCommand(0xD3);   // Set display offset
-	OLED_WriteCommand(0x00);   // No offset
-	OLED_WriteCommand(0xD5);   // Set display clock divide ratio/oscillator frequency
-	OLED_WriteCommand(0xF0);   // Set divide ratio
-	OLED_WriteCommand(0xD9);   // Set pre-charge period
-	OLED_WriteCommand(0x22);
-	OLED_WriteCommand(0xDA);   // Set com pins hardware configuration
-	OLED_WriteCommand(0x12);
-	OLED_WriteCommand(0xDB);   // Set vcomh
-	OLED_WriteCommand(0x20);   // 0x20,0.77xVcc
-	OLED_WriteCommand(0x8D);   // Set DC-DC enable
-	OLED_WriteCommand(0x14);   //
-	OLED_WriteCommand(0xAF);   // Turn on OLED panel
-	OLED_Fill(BLACK); // Clear screen
-	OLED_UpdateScreen(); // Flush buffer to screen
+    vTaskDelay(pdMS_TO_TICKS(100)); // Wait for the screen to boot
+    OLED_WriteCommand(0xAE);   // Display off
+    OLED_WriteCommand(0x20);   // Set Memory Addressing Mode
+    OLED_WriteCommand(0x10);   // 00,Horizontal Addressing Mode;01,Vertical Addressing Mode;10,Page Addressing Mode (RESET);11,Invalid
+    OLED_WriteCommand(0xB0);   // Set Page Start Address for Page Addressing Mode,0-7
+    OLED_WriteCommand(0xC8);   // Set COM Output Scan Direction
+    OLED_WriteCommand(0x00);   // Set low column address
+    OLED_WriteCommand(0x10);   // Set high column address
+    OLED_WriteCommand(0x40);   // Set start line address
+    OLED_WriteCommand(0x81);   // set contrast control register
+    OLED_WriteCommand(0xFF);
+    OLED_WriteCommand(0xA1);   // Set segment re-map 0 to 127
+    OLED_WriteCommand(0xA6);   // Set normal display
+    OLED_WriteCommand(0xA8);   // Set multiplex ratio(1 to 64)
+    OLED_WriteCommand(0x3F);
+    OLED_WriteCommand(0xA4);   // 0xa4,Output follows RAM content;0xa5,Output ignores RAM content
+    OLED_WriteCommand(0xD3);   // Set display offset
+    OLED_WriteCommand(0x00);   // No offset
+    OLED_WriteCommand(0xD5);   // Set display clock divide ratio/oscillator frequency
+    OLED_WriteCommand(0xF0);   // Set divide ratio
+    OLED_WriteCommand(0xD9);   // Set pre-charge period
+    OLED_WriteCommand(0x22);
+    OLED_WriteCommand(0xDA);   // Set com pins hardware configuration
+    OLED_WriteCommand(0x12);
+    OLED_WriteCommand(0xDB);   // Set vcomh
+    OLED_WriteCommand(0x20);   // 0x20,0.77xVcc
+    OLED_WriteCommand(0x8D);   // Set DC-DC enable
+    OLED_WriteCommand(0x14);   //
+    OLED_WriteCommand(0xAF);   // Turn on OLED panel
+    OLED_Fill(BLACK); // Clear screen
+    OLED_UpdateScreen(); // Flush buffer to screen
 }
 
 // Write the screenbuffer with changed to the screen
 void OLED_UpdateScreen(void) 
 {
-	// Write data to each page of RAM. Number of pages
-	// depends on the screen height:
-	//
-	//  * 32px   ==  4 pages
-	//  * 64px   ==  8 pages
-	//  * 128px  ==  16 pages
-	for(uint8_t i = 0; i < OLED_HEIGHT/8; i++) 
-	{
-		OLED_WriteCommand(0xB0 + i); // Set the current RAM page address.
-		OLED_WriteCommand(0x00);
-		OLED_WriteCommand(0x10);
-		OLED_WriteData(&screenBuffer[OLED_WIDTH*i],OLED_WIDTH);
-	}
+    // Write data to each page of RAM. Number of pages
+    // depends on the screen height:
+    //
+    //  * 32px   ==  4 pages
+    //  * 64px   ==  8 pages
+    //  * 128px  ==  16 pages
+    for(uint8_t i = 0; i < OLED_HEIGHT/8; i++) 
+    {
+        OLED_WriteCommand(0xB0 + i); // Set the current RAM page address.
+        OLED_WriteCommand(0x00);
+        OLED_WriteCommand(0x10);
+        OLED_WriteData(&screenBuffer[OLED_WIDTH*i],OLED_WIDTH);
+    }
 }
 
 void OLED_DrawPixel(uint8_t x, uint8_t y, OLED_COLOR color) 
 {
-	if(x >= OLED_WIDTH || y >= OLED_HEIGHT) 
-	{
-		return; // Don't write outside the buffer
-	}
-	// Draw in the right color
-	if(color == WHITE) 
-	{
-		screenBuffer[x + (y / 8) * OLED_WIDTH] |= 1 << (y % 8);
-	} 
-	else 
-	{
-		screenBuffer[x + (y / 8) * OLED_WIDTH] &= ~(1 << (y % 8));
-	}
+    if(x >= OLED_WIDTH || y >= OLED_HEIGHT) 
+    {
+        return; // Don't write outside the buffer
+    }
+    // Draw in the right color
+    if(color == WHITE) 
+    {
+        screenBuffer[x + (y / 8) * OLED_WIDTH] |= 1 << (y % 8);
+    } 
+    else 
+    {
+        screenBuffer[x + (y / 8) * OLED_WIDTH] &= ~(1 << (y % 8));
+    }
 }
 
 char OLED_WriteChar(char ch, OLED_COLOR color) 
 {
-	uint32_t i, b, j;
-	// Check if character is valid
-	if(ch < 32 || ch > 126)
-	{
-		return 0;
-	}
-	// Check remaining space on current line
-	if(OLED_WIDTH < (xPos + FONT_WIDTH) ||
-		 OLED_HEIGHT < (yPos + FONT_HEIGHT))
-	{
-		return 0; // Not enough space on current line
-	}
-	// Use the font to write
-	for(i = 0; i < FONT_HEIGHT; i++) 
-	{
-		b = Font_7x10[(ch - 32) * FONT_HEIGHT + i];
-		for(j = 0; j < FONT_WIDTH; j++) 
-		{
-			if((b << j) & 0x8000)  
-			{
-				OLED_DrawPixel(xPos + j, (yPos + i), (OLED_COLOR) color);
-			} 
-			else 
-			{
-				OLED_DrawPixel(xPos + j, (yPos + i), (OLED_COLOR)!color);
-			}
-		}
-	}
-	xPos += FONT_WIDTH; // The current space is now taken
-	return ch; // Return written char for validation
+    uint32_t i, b, j;
+    // Check if character is valid
+    if(ch < 32 || ch > 126)
+    {
+        return 0;
+    }
+    // Check remaining space on current line
+    if(OLED_WIDTH < (xPos + FONT_WIDTH) ||
+         OLED_HEIGHT < (yPos + FONT_HEIGHT))
+    {
+        return 0; // Not enough space on current line
+    }
+    // Use the font to write
+    for(i = 0; i < FONT_HEIGHT; i++) 
+    {
+        b = Font_7x10[(ch - 32) * FONT_HEIGHT + i];
+        for(j = 0; j < FONT_WIDTH; j++) 
+        {
+            if((b << j) & 0x8000)  
+            {
+                OLED_DrawPixel(xPos + j, (yPos + i), (OLED_COLOR) color);
+            } 
+            else 
+            {
+                OLED_DrawPixel(xPos + j, (yPos + i), (OLED_COLOR)!color);
+            }
+        }
+    }
+    xPos += FONT_WIDTH; // The current space is now taken
+    return ch; // Return written char for validation
 }
 
 // Write full string to screenbuffer
 char OLED_WriteString(char* str, OLED_COLOR color) 
 {
-	// Write until null-byte
-	while(*str) 
-	{
-		if(OLED_WriteChar(*str, color) != *str) 
-		{
-			return *str; // Char could not be written
-		}
-		str++; // Next char
-	}
-	return *str; // Everything ok
+    // Write until null-byte
+    while(*str) 
+    {
+        if(OLED_WriteChar(*str, color) != *str) 
+        {
+            return *str; // Char could not be written
+        }
+        str++; // Next char
+    }
+    return *str; // Everything ok
 }
 
 void OLED_SetCursor(uint8_t x, uint8_t y) 
 {
-	xPos = x;
-	yPos = y;
+    xPos = x;
+    yPos = y;
 }
 
 void OLED_ClearScreen(void)
 {
-	memset(screenBuffer,0,OLED_BUFFER_SIZE);
-	OLED_UpdateScreen();
+    memset(screenBuffer,0,OLED_BUFFER_SIZE);
+    OLED_UpdateScreen();
 }

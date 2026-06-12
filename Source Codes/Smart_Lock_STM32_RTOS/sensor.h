@@ -1,3 +1,5 @@
+// Author: Olaoluwa Raji
+
 #ifndef SENSOR_H
 #define SENSOR_H
 

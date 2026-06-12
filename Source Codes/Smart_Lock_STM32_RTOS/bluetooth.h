@@ -1,3 +1,5 @@
+// Author: Olaoluwa Raji
+
 #ifndef BLUETOOTH_H
 #define BLUETOOTH_H
 
@@ -7,11 +9,11 @@
 
 typedef enum
 {
-	NO_DATA = 0,
-	BUFFER_FULL,
-	IDLE_LINE
+    NO_DATA = 0,
+    BUFFER_FULL,
+    IDLE_LINE
 }btStatus_t;
-	
+    
 extern void BT_Init(void);
 extern void BT_RxBufferInit(uint8_t* pBuffer,uint8_t bufferSize);
 extern void BT_RxBufferReset(btStatus_t status,uint8_t* pBuffer,uint8_t bufferSize);

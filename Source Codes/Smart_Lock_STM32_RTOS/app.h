@@ -1,3 +1,5 @@
+// Author: Olaoluwa Raji
+
 #ifndef APP_H
 #define APP_H
 
@@ -46,8 +48,8 @@ extern uint8_t FindFingerprint(void);
 extern bool HasTimedOut(uint8_t* tCount,uint8_t timeout);
 extern void SetIntertaskData(bool* pSharedData,bool state);
 extern void IntertaskTimeout(bool* pSharedData,
-														 uint8_t* tCount,
-														 uint8_t timeout);
+                             uint8_t* tCount,
+                             uint8_t timeout);
 extern void IntegerToString(uint32_t integer, char* pBuffer);
 
 #endif //APP_H

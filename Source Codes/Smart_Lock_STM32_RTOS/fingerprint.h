@@ -1,3 +1,7 @@
+// Original source: https://github.com/adafruit/Adafruit-Fingerprint-Sensor-Library/blob/master/Adafruit_Fingerprint.cpp
+// Ported to STM32 by Olaoluwa Raji. 
+// Olaoluwa Raji's port: Includes DMA functionality.
+
 #ifndef FINGERPRINT_H
 #define FINGERPRINT_H
 
@@ -57,7 +61,7 @@
        //!< last model generated
 #define FINGERPRINT_TEMPLATECOUNT 0x1D //!< Read finger template numbers
 
-extern void Fingerprint_Init(void);
+extern void    Fingerprint_Init(void);
 extern uint8_t Fingerprint_GetImage(void);
 extern uint8_t Fingerprint_Image2Tz(uint8_t slot);
 extern uint8_t Fingerprint_CreateModel(void);

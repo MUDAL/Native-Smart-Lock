@@ -1,11 +1,7 @@
 # Native smart door lock  
 
 ## Description  
-The Native Smart Lock is a functional prototype designed and developed for a school project.   
-It is a secure, door locking system that can be accessed using multiple options for access control,   
-including fingerprint, keypad, mobile application, and tactile buttons. The system also features tamper   
-detection using an ultrasonic sensor, real-time responses to security breaches via SMS alerts, and a user   
-interface (keypad + OLED) to aid man-machine communication.  
+The Native Smart Lock is a functional prototype designed and developed for a school project. It is a secure, door locking system that can be accessed using multiple options for access control, including fingerprint, keypad, mobile application, and tactile buttons. The system also features tamper  detection using an ultrasonic sensor, real-time responses to security breaches via SMS alerts, and a user interface (keypad + OLED) to aid man-machine communication.  
 
 ## Features  
 1. Access control via:  
@@ -25,7 +21,9 @@ interface (keypad + OLED) to aid man-machine communication.
 5. Timekeeping occurrences of intruder and tamper detection using a Real-Time Clock.         
 
 ## Block diagram  
-![block_diagram drawio](https://github.com/MUDAL/Tamper-Proof-Smart-Lock/assets/46250887/f540e1f2-56fd-4c3c-ac55-64456b7fc580)     
+<p align="center">
+    <img width=60% src="https://github.com/MUDAL/Tamper-Proof-Smart-Lock/assets/46250887/f540e1f2-56fd-4c3c-ac55-64456b7fc580">
+</p>    
 
 ## Software  
 1. Keil uVision 5 for programming the STM32 microcontroller.  
@@ -33,13 +31,14 @@ interface (keypad + OLED) to aid man-machine communication.
 3. FreeRTOS (for concurrent execution of tasks).   
 
 ## Software architecture  
-![Layered architecture](https://user-images.githubusercontent.com/46250887/224175922-1c03e6f9-ef71-46db-a4cd-f25f12cb3bbb.png)  
+<p align="center">
+    <img width=30% src="https://user-images.githubusercontent.com/46250887/224175922-1c03e6f9-ef71-46db-a4cd-f25f12cb3bbb.png">
+</p>   
 
 The software for the Smart Lock was designed using a layered architecture consisting of:   
 
 1. ``Device drivers`` (using CMSIS): UART, I2C, GPIO, DMA, SysTick, Timer, RCC.  
-2. ``Libraries``: These abstract the device drivers and provide an interface (function calls) for the main application  
-to control devices like the Fingerprint module, OLED, GSM module etc. without the need to know about their hardware configurations.  
+2. ``Libraries``: These abstract the device drivers and provide an interface (function calls) for the main application to control devices like the Fingerprint module, OLED, GSM module etc. without the need to know about their hardware configurations.  
 3. ``Main application``: A mix of ``FreeRTOS`` and function calls from the ``Libraries`` layer.      
 
 ## Algorithm for the main application  
@@ -57,11 +56,11 @@ The main application is divided into functions, FreeRTOS tasks and a software ti
 The algorithm for the main application (functions, FreeRTOS tasks and software timer) is represented with flowcharts. All flowcharts can be found in the ``Flowcharts`` folder in this repo.  
 
 ## Mobile application  
-The app was developed using ``MIT App Inventor``. The ``aia`` file can be found in  
-the ``App files`` folder of this repo. This file can be opened in MIT App Inventor  
-to view the source code. The ``APK`` file is also present in the same folder as the  
-``aia`` file. The app communicates with the smart lock via ``Bluetooth``.  
-![smart_lock_app](https://user-images.githubusercontent.com/46250887/223219502-15954848-4aee-4515-b2ed-a8cfea6cb61c.jpg)   
+The app was developed using ``MIT App Inventor``. The ``aia`` file can be found in the ``App files`` folder of this repo. This file can be opened in MIT App Inventor to view the source code. The ``APK`` file is also present in the same folder as the ``aia`` file. The app communicates with the smart lock via ``Bluetooth``.  
+
+<p align="center">
+    <img width=30% src="https://user-images.githubusercontent.com/46250887/223219502-15954848-4aee-4515-b2ed-a8cfea6cb61c.jpg">
+</p> 
 
 ## Hardware / Pinout
 |  N   |  Component     | STM32                            |  
@@ -82,22 +81,18 @@ to view the source code. The ``APK`` file is also present in the same folder as 
 ## Important SIM800L points  
 1. The module should be powered with sufficient voltage (4.1 to 4.4v).  
 2. It should also be powered with a supply that can source 2A or more.  
-3. The wires connecting the power pins of the module to the supply should be as short as possible   
-to minimize resistance. This helps prevent unwanted resets (the resistance introduced    
-by longer wires could limit the current the module would draw).   
+3. The wires connecting the power pins of the module to the supply should be as short as possible to minimize resistance. This helps prevent unwanted resets (the resistance introduced by longer wires could limit the current the module would draw).   
 
 ## Images of the prototype  
-![20230624_191517](https://github.com/MUDAL/Tamper-Proof-Smart-Lock/assets/46250887/d4ef822b-5945-436c-8350-c2b07900f279)  
-![zzz](https://github.com/MUDAL/Tamper-Proof-Smart-Lock/assets/46250887/7562ec2b-2ebd-41f2-895a-7f4c4dbb9e5d)  
-![zzz3](https://github.com/MUDAL/Tamper-Proof-Smart-Lock/assets/46250887/130b38ab-0034-4016-8ea1-ca5dd125c7d4)  
-![20230214_100150](https://user-images.githubusercontent.com/46250887/218695341-854c8ac2-5f41-40c8-8c51-136155ccb4ab.jpg)
-![20230214_100155](https://user-images.githubusercontent.com/46250887/218695788-5e97ac57-4694-493b-84dd-bd5a98e1836b.jpg)
-![20230214_100201](https://user-images.githubusercontent.com/46250887/218695384-c2354e53-0bb2-4330-9c62-f33aa4c8f0eb.jpg)
-![20230214_100224](https://user-images.githubusercontent.com/46250887/218695462-d884f2eb-eaef-4798-b935-7daa5b8e202b.jpg)
-![20230103_102348](https://user-images.githubusercontent.com/46250887/210335882-975661a0-fde1-4a5d-8249-8ec0525b2334.jpg)  
-![20230103_102401](https://user-images.githubusercontent.com/46250887/210335912-574271c0-df18-410e-85a2-cb47c12eabd1.jpg)  
-![20230103_102541](https://user-images.githubusercontent.com/46250887/210335947-0569a6c0-065f-4610-aa5f-1f1278c975b3.jpg)  
-![20230103_102533](https://user-images.githubusercontent.com/46250887/210335978-96057d95-0fb2-41ab-ae00-ca529f5605fd.jpg)  
+<p align="center">
+    <img width=60% src="https://github.com/MUDAL/Tamper-Proof-Smart-Lock/assets/46250887/d4ef822b-5945-436c-8350-c2b07900f279">
+</p>   
+
+<p align="center">
+    <img width=60% src="https://github.com/MUDAL/Tamper-Proof-Smart-Lock/assets/46250887/7562ec2b-2ebd-41f2-895a-7f4c4dbb9e5d">
+</p>
+
+Additional images can be found in the `Images` folder of this repository.  
 
 ## Credits  
 This section lists the libraries adapted to meet the system's requirements.   

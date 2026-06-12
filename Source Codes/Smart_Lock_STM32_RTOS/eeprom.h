@@ -1,3 +1,5 @@
+// Author: Olaoluwa Raji
+
 #ifndef _EEPROM_H
 #define _EEPROM_H
 /**

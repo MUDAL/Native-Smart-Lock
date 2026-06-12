@@ -1,3 +1,5 @@
+// Author: Olaoluwa Raji
+
 #ifndef _RTC_H
 #define _RTC_H
 /*
@@ -5,17 +7,17 @@
 */
 enum Period
 {
-	RTC_PERIOD_AM = 0,
-	RTC_PERIOD_PM,
-	RTC_NO_PERIOD
+    RTC_PERIOD_AM = 0,
+    RTC_PERIOD_PM,
+    RTC_NO_PERIOD
 };
 
 typedef struct
 {
-	uint8_t seconds;
-	uint8_t minutes;
-	uint8_t hours;
-	uint8_t period;
+    uint8_t seconds;
+    uint8_t minutes;
+    uint8_t hours;
+    uint8_t period;
 }ds3231_t;
 
 extern void RTC_GetTime(ds3231_t* pTime);

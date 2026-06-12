@@ -1,10 +1,12 @@
+// Author: Olaoluwa Raji
+
 #ifndef OUTPUT_DEVICE_H
 #define OUTPUT_DEVICE_H
 
 typedef enum
 {
-	LOCK = 0,
-	BUZZER
+    LOCK = 0,
+    BUZZER
 }outputDev_t;
 
 extern void OutputDev_Init(void);

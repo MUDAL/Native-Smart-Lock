@@ -1,10 +1,12 @@
+// Author: Olaoluwa Raji
+
 #ifndef BUTTON_H
 #define BUTTON_H
 
 typedef enum
 {
-	INDOOR = 0,
-	OUTDOOR
+    INDOOR = 0,
+    OUTDOOR
 }button_t;
 
 extern void Button_Init(void);

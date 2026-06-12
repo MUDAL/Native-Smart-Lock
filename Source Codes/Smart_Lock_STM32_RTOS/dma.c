@@ -1,3 +1,5 @@
+// Author: Olaoluwa Raji
+
 #include "stm32f10x.h"                  // Device header
 #include <stdbool.h>
 #include "dma.h"
@@ -5,17 +7,17 @@
 @brief Initializes a USART Rx DMA channel.  
 */
 void DMA_USART_Rx_Init(DMA_Channel_TypeDef* dmaChannel,
-											 USART_TypeDef* UARTx,
-											 uint8_t* uartRxBuffer, 
-											 uint8_t bufferSize,
-											 uint32_t dmaConfig)
+                       USART_TypeDef* UARTx,
+                       uint8_t* uartRxBuffer, 
+                       uint8_t bufferSize,
+                       uint32_t dmaConfig)
 {
-	volatile uint32_t* pUart_DR = (uint32_t*)&UARTx->DR;
-	dmaChannel->CCR &= ~dmaConfig;
-	dmaChannel->CPAR = (uint32_t)pUart_DR;
-	dmaChannel->CMAR = (uint32_t)uartRxBuffer;
-	dmaChannel->CNDTR = bufferSize;
-	dmaChannel->CCR |= dmaConfig;
+    volatile uint32_t* pUart_DR = (uint32_t*)&UARTx->DR;
+    dmaChannel->CCR &= ~dmaConfig;
+    dmaChannel->CPAR = (uint32_t)pUart_DR;
+    dmaChannel->CMAR = (uint32_t)uartRxBuffer;
+    dmaChannel->CNDTR = bufferSize;
+    dmaChannel->CCR |= dmaConfig;
 }
 
 /**
@@ -26,15 +28,15 @@ void DMA_USART_Rx_Init(DMA_Channel_TypeDef* dmaChannel,
 */
 bool DMA_RxBufferFull(DMA_TypeDef* dmaPort, uint8_t dmaChannel)
 {
-	bool bufferIsFull = false;
-	uint8_t bitLocation = (dmaChannel * 4) - 3;
-	
-	if((dmaPort->ISR & (1<<bitLocation)) == (1<<bitLocation))
-	{
-		bufferIsFull = true;
-		dmaPort->IFCR |= (1<<bitLocation);
-	}
-	return bufferIsFull;
+    bool bufferIsFull = false;
+    uint8_t bitLocation = (dmaChannel * 4) - 3;
+    
+    if((dmaPort->ISR & (1<<bitLocation)) == (1<<bitLocation))
+    {
+        bufferIsFull = true;
+        dmaPort->IFCR |= (1<<bitLocation);
+    }
+    return bufferIsFull;
 }
 
 /**
@@ -45,5 +47,5 @@ the number of bytes left to be received.
 */
 uint8_t DMA_Rx_CNDTR(DMA_Channel_TypeDef* dmaChannel)
 {
-	return dmaChannel->CNDTR;
+    return dmaChannel->CNDTR;
 }
